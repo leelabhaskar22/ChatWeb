@@ -10,29 +10,35 @@ const Chat = () => {
     const [message , setMessage] = useState('');
     const [array, setArray] = useState([])
     const user = auth.currentUser
+    const messagesCollectionref = new collection(db, 'messages')
+    
     const handleenter = (e) =>{
         if(e.key === 'Enter'){
             savefirebase()
             setMessage('')
         }
     }
-    const messagesCollectionref = new collection(db, 'messages')
+    
     const savefirebase = async () => {
-        const messagedata = {
+        try{
+            const messagedata = {
             text: message,
             userId : auth.currentUser.uid,
             timestamp : serverTimestamp(),
             photourl :  user.photoURL,
         }
-  
-    await addDoc(messagesCollectionref, messagedata)
+        await addDoc(messagesCollectionref, messagedata)
+        setMessage('')
+    }catch(e){
+        console.log(e)
+    }
+
     }
     
-
     const q = query(messagesCollectionref, orderBy('timestamp', 'asc'));
-useEffect(() => {
-    fetchMessages();
-},[])
+    useEffect(() => {
+        fetchMessages();
+    },[])
     const fetchMessages = async () => {
         try { 
             const querySnapshot = await getDocs(q);
@@ -78,7 +84,7 @@ useEffect(() => {
         </div>
         <div className='chat_box'>
     {array.map((item,index) => {
-        const isCurrentUser = auth.currentUser.uid === item.userId;
+        const isCurrentUser = user.uid === item.userId;
         return (
             <div className={isCurrentUser ? 'user-message' : 'friend-message'} key={index}>
                 {isCurrentUser ? (
@@ -100,7 +106,6 @@ useEffect(() => {
         );
     })}
 </div>
-
           <div className='input_container'>
               <input
                   placeholder='enter your message'

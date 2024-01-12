@@ -15,14 +15,15 @@ const Auth = () => {
     cookies.set('auth-token',response.user.refreshToken
     )
     console.log(response)
-
+    window.location.reload(true)
   }catch(error){
     console.error(error)
   }
   }
   return (
-    <div>
-      <GoogleButton style={{margin: '20px auto'}} onClick={signin}/>
+    <div  className='auth-container'>
+      <h2>Continue With Google</h2>
+      <GoogleButton  onClick={signin}/>
     </div>
   )
 }
