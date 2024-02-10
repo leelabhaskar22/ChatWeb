@@ -4,6 +4,7 @@ import "./Chat.css";
 import { signOut } from 'firebase/auth';
 import { serverTimestamp, addDoc,query,orderBy, collection, getDocs, onSnapshot } from 'firebase/firestore';
 import Cookies from 'universal-cookie'
+import { IoSend} from 'react-icons/io5'
 const cookies = new Cookies()
 
 const Chat = () => {
@@ -21,14 +22,17 @@ const Chat = () => {
     
     const savefirebase = async () => {
         try{
+        if(message.length > 0){
+
             const messagedata = {
-            text: message,
-            userId : auth.currentUser.uid,
-            timestamp : serverTimestamp(),
-            photourl :  user.photoURL,
+                text: message,
+                userId : auth.currentUser.uid,
+                timestamp : serverTimestamp(),
+                photourl :  user.photoURL,
+            }
+            await addDoc(messagesCollectionref, messagedata)
+            setMessage('')
         }
-        await addDoc(messagesCollectionref, messagedata)
-        setMessage('')
     }catch(e){
         console.log(e)
     }
@@ -108,11 +112,11 @@ const Chat = () => {
 </div>
           <div className='input_container'>
               <input
-                  placeholder='enter your message'
+                  placeholder='Type a message'
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   onKeyDown={handleenter} />
-              <button onClick={savefirebase}>submit</button>
+              <button onClick={savefirebase}><IoSend size={24} /></button>
           </div>
       </div>
     </>
