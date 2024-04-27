@@ -22,7 +22,7 @@ const Auth = () => {
   }
   return (
     <div  className='auth-container'>
-      <h2>Continue With Google</h2>
+      <h2 >Continue With Google</h2>
       <GoogleButton  onClick={signin}/>
     </div>
   )

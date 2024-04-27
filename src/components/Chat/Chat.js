@@ -21,8 +21,8 @@ const Chat = () => {
     }
     
     const savefirebase = async () => {
-        try{
         if(message.length > 0){
+        try{
 
             const messagedata = {
                 text: message,
@@ -32,9 +32,9 @@ const Chat = () => {
             }
             await addDoc(messagesCollectionref, messagedata)
             setMessage('')
+        }catch(e){
+            console.log(e)
         }
-    }catch(e){
-        console.log(e)
     }
 
     }
@@ -110,14 +110,14 @@ const Chat = () => {
         );
     })}
 </div>
-          <div className='input_container'>
-              <input
-                  placeholder='Type a message'
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  onKeyDown={handleenter} />
-              <button onClick={savefirebase}><IoSend size={24} /></button>
-          </div>
+    <div className='input_container'>
+        <input
+            placeholder='Type a message'
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={handleenter} />
+        <button onClick={savefirebase}><IoSend size={24} /></button>
+    </div>
       </div>
     </>
   )
